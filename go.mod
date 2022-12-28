@@ -1,0 +1,3 @@
+module SE_MIM22_WEBSHOP_MONO
+
+go 1.19
