@@ -1,0 +1,15 @@
+#  --------------------------------------------------------------------------------
+version: '3.8'
+services:
+  registerservice:
+    networks:
+        - bookstore
+    build: ./
+    container_name: registerservice
+    working_dir: /SE_MIM22_WEBSHOP_MONO
+    ports:
+      - "8442:8442"
+
+networks:
+  bookstore:
+    name: "bookstore"

@@ -1,7 +1,7 @@
 package main
 
 import (
-	"SE_MIM22_WEBSHOP_MONO/RegisterService/handler"
+	"SE_MIM22_WEBSHOP_MONO/handler"
 	"log"
 	"net/http"
 	"time"

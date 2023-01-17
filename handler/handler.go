@@ -1,12 +1,12 @@
 package handler
 
 import (
+	"SE_MIM22_WEBSHOP_MONO/model"
 	"database/sql"
 	"encoding/json"
 	"io"
 	"net/http"
 
-	"SE_MIM22_WEBSHOP_MONO/model"
 	_ "github.com/go-sql-driver/mysql"
 )
 
