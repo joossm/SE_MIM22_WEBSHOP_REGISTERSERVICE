@@ -1,18 +1,21 @@
 package main
 
 import (
-	"SE_MIM22_WEBSHOP_MONO/handler"
+	"SE_MIM22_WEBSHOP_REGISTERSERVICE/handler"
 	"log"
 	"net/http"
 	"time"
 )
 
-func main() { // Server
+func main() {
 	var serveMux = http.NewServeMux()
-	fileServer := http.FileServer(http.Dir("/view"))
-	serveMux.Handle("/", http.StripPrefix("/view", fileServer))
 	serveMux.HandleFunc("/register", handler.Register)
-	log.Printf("\n\n\tREGISTERSERVICE\n\nAbout to listen on 8442.\nGet All Books: http://127.0.0.1:8442/register")
+	log.Printf("\n\n\tREGISTERSERVICE\n\nAbout to listen on Port: 8442.\n\nSUPPORTED REQUESTS:\nPOST:\n" +
+		"Register on: http://127.0.0.1:8442/register requires a JSON Body with the following format:\n" +
+		"{\n    \"Username\": \"mmuster\",\n    \"Password\": \"password\",\n    \"Firstname\": \"Max\",\n   " +
+		" \"Lastname\": \"Muster\",\n    \"Housenumber\": \"1\",\n    \"Street\": \"Musterstr.\",\n  " +
+		"  \"Zipcode\": \"01234\",\n    \"City\": \"Musterstadt\",\n    \"Email\": \"max.muster@mail.com\",\n  " +
+		"  \"Phone\": \"012345678910\"\n  }")
 	server := &http.Server{
 		Addr:              ":8442",
 		ReadHeaderTimeout: 3 * time.Second,

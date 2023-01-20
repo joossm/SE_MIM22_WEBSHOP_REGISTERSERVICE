@@ -1,29 +1,27 @@
 package handler
 
 import (
-	"SE_MIM22_WEBSHOP_MONO/model"
+	"SE_MIM22_WEBSHOP_REGISTERSERVICE/model"
 	"database/sql"
 	"encoding/json"
+	"fmt"
 	"io"
 	"net/http"
 
-	_ "github.com/go-sql-driver/mysql"
+	_ "github.com/go-sql-driver/mysql" // MySQL Driver
 )
-
-const post = "POST"
 
 func Register(responseWriter http.ResponseWriter, request *http.Request) {
 	switch request.Method {
-	default:
-		_, err := responseWriter.Write([]byte("THIS IS A POST REQUEST"))
-		errorHandler(err)
-	case post:
+	case "POST":
 		if request.Body != nil {
 			body, _ := io.ReadAll(request.Body)
 			user := model.User{}
 			jsonErr := json.Unmarshal(body, &user)
 			if jsonErr != nil {
-				responseWriter.Write([]byte("{ERROR}"))
+				_, responseErr := responseWriter.Write([]byte("{ERROR}"))
+				errorHandler(responseErr)
+				return
 			}
 			db := openDB()
 			defer closeDB(db)
@@ -42,11 +40,17 @@ func Register(responseWriter http.ResponseWriter, request *http.Request) {
 				errorHandler(errResponse)
 				return
 			}
-			db.Query("INSERT INTO users (Username, Password, Firstname, Lastname, HouseNumber, Street, ZipCode, City, Email, Phone) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+			_, dbErr := db.Query("INSERT INTO users (Username, Password, Firstname, Lastname, HouseNumber, Street, ZipCode, City, Email, Phone) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
 				user.Username, user.Password, user.Firstname, user.Lastname, user.HouseNumber, user.Street, user.ZipCode, user.City, user.Email, user.Phone)
-			responseWriter.Write([]byte("{true}"))
+			errorHandler(dbErr)
+			_, responseErr := responseWriter.Write([]byte("{true}"))
+			errorHandler(responseErr)
 			return
 		}
+	default:
+		_, err := responseWriter.Write([]byte("THIS IS A POST REQUEST"))
+		errorHandler(err)
+		return
 	}
 }
 
@@ -56,12 +60,16 @@ func closeDB(db *sql.DB) {
 }
 
 func openDB() *sql.DB {
-	db, err := sql.Open("mysql", "root:admin@tcp(127.0.0.1:3306)/books")
+	fmt.Println("Opening DB")
+	db, err := sql.Open("mysql", "root:root@tcp(mysql:3306)/books")
+	fmt.Println(db.Ping())
+	fmt.Println(db.Stats())
+	db.SetMaxIdleConns(0)
 	errorHandler(err)
 	return db
 }
 func errorHandler(err error) {
 	if err != nil {
-		print(err)
+		fmt.Println(err)
 	}
 }
