@@ -10,7 +10,11 @@ import (
 func main() {
 	var serveMux = http.NewServeMux()
 	serveMux.HandleFunc("/register", handler.Register)
-	log.Printf("\n\n\tREGISTERSERVICE\n\nAbout to listen on Port: 8442.\n\nSUPPORTED REQUESTS:\nPOST:\n" +
+	serveMux.HandleFunc("/error", handler.Error)
+	log.Printf("\n\n\tREGISTERSERVICE\n\nAbout to listen on Port: 8442.\n\nSUPPORTED REQUESTS:\n" +
+		"GET:\n" +
+		"Create Error on: http://127.0.0.1:8442/error\n" +
+		"POST:\n" +
 		"Register on: http://127.0.0.1:8442/register requires a JSON Body with the following format:\n" +
 		"{\n    \"Username\": \"mmuster\",\n    \"Password\": \"password\",\n    \"Firstname\": \"Max\",\n   " +
 		" \"Lastname\": \"Muster\",\n    \"Housenumber\": \"1\",\n    \"Street\": \"Musterstr.\",\n  " +

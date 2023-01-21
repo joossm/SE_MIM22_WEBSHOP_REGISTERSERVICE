@@ -54,6 +54,12 @@ func Register(responseWriter http.ResponseWriter, request *http.Request) {
 	}
 }
 
+func Error(responseWriter http.ResponseWriter, request *http.Request) {
+	// This is just a test function to create an error
+	Error(responseWriter, request)
+	panic("ERROR")
+}
+
 func closeDB(db *sql.DB) {
 	err := db.Close()
 	errorHandler(err)
