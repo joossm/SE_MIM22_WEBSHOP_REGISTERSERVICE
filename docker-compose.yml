@@ -6,7 +6,7 @@ services:
       - bookstore
     build: ./
     container_name: registerservice
-    working_dir: /SE_MIM22_WEBSHOP_MONO
+    working_dir: /SE_MIM22_WEBSHOP_REGISTERSERVICE
     ports:
       - "8442:8442"
 
